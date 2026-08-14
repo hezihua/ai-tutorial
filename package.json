@@ -1,0 +1,18 @@
+{
+  "name": "ai-tutorial",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @claude-code-tutorial/portal dev",
+    "dev:blog": "pnpm --filter @claude-code-tutorial/blog dev",
+    "dev:engineering": "pnpm --filter @claude-code-tutorial/engineering-blog dev",
+    "dev:all": "pnpm -r --parallel --filter=@claude-code-tutorial/portal --filter=@claude-code-tutorial/blog --filter=@claude-code-tutorial/engineering-blog dev",
+    "build:portal": "pnpm --filter @claude-code-tutorial/portal build",
+    "build:blog": "pnpm --filter @claude-code-tutorial/blog build",
+    "build:engineering": "pnpm --filter @claude-code-tutorial/engineering-blog build",
+    "lint": "pnpm -r lint"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
