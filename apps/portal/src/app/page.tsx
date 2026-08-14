@@ -1,11 +1,5 @@
-"use client";
-
-interface SubProject {
-  name: string;
-  description: string;
-  url: string;
-  status: "active" | "planned";
-}
+import { TabsClient } from "./TabsClient";
+import { getAllNotes } from "@/lib/notes";
 
 function getUrls() {
   const isProd = process.env.NODE_ENV === "production";
@@ -23,97 +17,32 @@ function getUrls() {
   };
 }
 
-function ProjectCard({ project }: { project: SubProject }) {
-  const isActive = project.status === "active";
-
-  return (
-    <a
-      href={project.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`group relative overflow-hidden rounded-2xl border p-8 transition-all duration-300 ${
-        isActive
-          ? "border-neutral-800 bg-neutral-900/60 hover:border-neutral-600 hover:bg-neutral-900"
-          : "border-neutral-800/50 bg-neutral-900/20 opacity-60 cursor-not-allowed"
-      }`}
-      onClick={(e) => !isActive && e.preventDefault()}
-    >
-      <div className="mb-4">
-        <span
-          className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${
-            isActive
-              ? "bg-emerald-500/10 text-emerald-400"
-              : "bg-neutral-500/10 text-neutral-400"
-          }`}
-        >
-          {isActive ? "● 在线" : "○ 规划中"}
-        </span>
-      </div>
-
-      <h2 className="text-xl font-semibold text-neutral-100 mb-2">
-        {project.name}
-      </h2>
-
-      <p className="text-sm text-neutral-400 leading-relaxed mb-8">
-        {project.description}
-      </p>
-
-      {isActive && (
-        <div className="flex items-center gap-2 text-sm text-emerald-400 group-hover:text-emerald-300">
-          <span>打开项目</span>
-          <span className="transition-transform group-hover:translate-x-0.5">→</span>
-        </div>
-      )}
-    </a>
-  );
-}
-
-export default function Home() {
+export default async function Home() {
   const urls = getUrls();
-
-  const projects: SubProject[] = [
-    {
-      name: "Claude Code Tutorial",
-      description: "交互式的 AI Agent 课程学习平台，包含 20 个循序渐进的章节、代码对比、模拟运行器和多语言支持。",
-      url: urls.web,
-      status: "active",
-    },
-    {
-      name: "ML 课程笔记",
-      description: "李宏毅老师机器学习课程学习笔记，涵盖机器学习、深度学习、强化学习、生成式 AI 等。",
-      url: urls.blog,
-      status: "active",
-    },
-    {
-      name: "AI 工程化",
-      description: "AI 工程化实战笔记，涵盖 MLOps 基础、LLM 工程化、AI 基础设施、质量保障等主题。",
-      url: urls.engineering,
-      status: "active",
-    },
-  ];
+  const notes = await getAllNotes();
 
   return (
     <main className="min-h-screen">
-      <div className="mx-auto max-w-5xl px-6 py-20">
-        <header className="mb-16 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-neutral-100 sm:text-5xl">
-            AI Tutorial
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 py-14 sm:py-20">
+        {/* ===== Hero 全宽 ===== */}
+        <section className="mb-14 sm:mb-20 text-center max-w-3xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-neutral-100 mb-5 leading-[1.05]">
+            <span className="bg-gradient-to-br from-neutral-100 via-neutral-100 to-violet-300 bg-clip-text text-transparent">
+              AI Tutorial
+            </span>
           </h1>
-          <p className="mt-4 text-lg text-neutral-400 max-w-2xl mx-auto">
-            Harness Engineering for Real Agents —
-            从 0 到 1 构建真实可用的 AI Agent 产品。
+          <p className="text-lg sm:text-xl text-neutral-400 leading-relaxed">
+            从 0 到 1 构建真实可用的 AI Agent 产品
+            <span className="block text-base text-neutral-500 mt-2">
+              系统化的笔记 · 交互化的课程 · 工程化的实战
+            </span>
           </p>
-        </header>
-
-        <section>
-          <div className="grid gap-6 sm:grid-cols-2">
-            {projects.map((project) => (
-              <ProjectCard key={project.name} project={project} />
-            ))}
-          </div>
         </section>
 
-        <footer className="mt-20 text-center text-xs text-neutral-600">
+        {/* ===== Tabs 切换 ===== */}
+        <TabsClient notes={notes} urls={urls} />
+
+        <footer className="mt-20 sm:mt-28 text-center text-xs text-neutral-600">
           <p>© 2026 AI Tutorial</p>
         </footer>
       </div>
