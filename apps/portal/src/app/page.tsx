@@ -12,7 +12,7 @@ function getUrls() {
   if (isProd) {
     return {
       web: "https://claude.haylee.site/",
-      blog: "https://ai-blog-lwfn.onrender.com",
+      blog: "https://ai-blog-6abx.onrender.com",
       engineering: "https://ai-engineering-blog.onrender.com",
     };
   }
