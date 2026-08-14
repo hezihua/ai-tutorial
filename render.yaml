@@ -3,7 +3,7 @@ services:
     type: web
     env: node
     buildCommand: pnpm install --frozen-lockfile && cd apps/portal && pnpm build
-    startCommand: pnpm --filter @claude-code-tutorial/portal start
+    startCommand: pnpm --filter @ai-tutorial/portal start
     rootDir: .
     region: singapore
     plan: free
@@ -15,7 +15,7 @@ services:
     type: web
     env: node
     buildCommand: pnpm install --frozen-lockfile && cd apps/blog && pnpm build
-    startCommand: pnpm --filter @claude-code-tutorial/blog start
+    startCommand: pnpm --filter @ai-tutorial/blog start
     rootDir: .
     region: singapore
     plan: free
@@ -27,7 +27,7 @@ services:
     type: web
     env: node
     buildCommand: pnpm install --frozen-lockfile && cd apps/engineering-blog && pnpm build
-    startCommand: pnpm --filter @claude-code-tutorial/engineering-blog start
+    startCommand: pnpm --filter @ai-tutorial/engineering-blog start
     rootDir: .
     region: singapore
     plan: free
