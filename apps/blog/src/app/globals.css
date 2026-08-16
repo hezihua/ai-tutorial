@@ -2,6 +2,16 @@
 @import "highlight.js/styles/github-dark.css";
 @import "katex/dist/katex.min.css";
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
@@ -218,4 +228,15 @@ body {
 
 .prose-invert .task-list-item input[type="checkbox"] {
   margin-right: 0.5rem;
+}
+
+/* Show anchor on hover for headings */
+.prose-invert h2:hover .heading-anchor,
+.prose-invert h3:hover .heading-anchor {
+  opacity: 1;
+}
+
+.prose-invert h2,
+.prose-invert h3 {
+  scroll-margin-top: 2rem;
 }
