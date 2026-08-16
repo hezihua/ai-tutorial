@@ -53,10 +53,10 @@ export default async function LecturePage({
 
   return (
     <div className="min-h-screen">
-      <div className="mx-auto max-w-6xl grid grid-cols-1 2xl:grid-cols-[1fr_16rem] gap-8 2xl:gap-12 px-8">
+      <div className="mx-auto max-w-7xl grid grid-cols-1 2xl:grid-cols-[1fr_14rem] gap-6 2xl:gap-8 px-6">
         {/* Main content column */}
         <div className="flex justify-center">
-          <div className="w-full max-w-4xl py-12">
+          <div className="w-full max-w-5xl py-12">
             <header className="mb-8 pb-6 border-b border-neutral-800">
               <div className="flex items-center gap-3 mb-3">
                 <span className={`text-xs ${course.accent}`}>
