@@ -45,15 +45,15 @@ GPU 記憶體分層（倉庫 / 工作台）：
 
 標準 Self-Attention：
 
-\[
-\text{Attention}(Q,K,V) = \mathrm{softmax}\!\left(\frac{QK^\top}{\sqrt{d}}\right) V
-\]
+$$
+\text{Attention}(Q,K,V) = \mathrm{softmax}\left(\frac{QK^\top}{\sqrt{d}}\right) V
+$$
 
 樸素實作會：
 
-1. 在 HBM 上存完整的 \(QK^\top\)（序列長 \(N\) 時是 \(O(N^2)\)）
+1. 在 HBM 上存完整的 $QK^\top$（序列長 $N$ 時是 $O(N^2)$）
 2. 再讀回來做 softmax
-3. 再與 \(V\) 相乘
+3. 再與 $V$ 相乘
 
 → **大量時間花在 HBM ↔ SRAM 的來回搬運**，而不是矩陣乘法本身。  
 這是典型的 **memory-bound（I/O bound）**，不是 compute-bound。
@@ -62,7 +62,7 @@ GPU 記憶體分層（倉庫 / 工作台）：
 
 ## 三、改進思路：分塊（Tiling）
 
-把 \(Q, K, V\) 切成小塊：
+把 $Q$、$K$、$V$ 切成小塊：
 
 - 每次只把能放進 SRAM 的塊搬上「工作台」
 - 在 SRAM 裡做完，再寫回必要結果
@@ -75,18 +75,18 @@ GPU 記憶體分層（倉庫 / 工作台）：
 
 標準流程心理上是：
 
-1. 算出完整 attention matrix \(A = \mathrm{softmax}(QK^\top / \sqrt{d})\)
-2. 再 \(O = A V\)
+1. 算出完整 attention matrix $A = \mathrm{softmax}(QK^\top / \sqrt{d})$
+2. 再 $O = AV$
 
 Flash Attention 的關鍵洞察：
 
 > **不需要把完整的 attention weight 矩陣真正存出來。**  
-> 在 SRAM 裡做完 \(QK\) 後，直接與 \(V\) 做加權累積，得到輸出 \(O\)。
+> 在 SRAM 裡做完 $QK$ 後，直接與 $V$ 做加權累積，得到輸出 $O$。
 
 全程：
 
-- 巨大的 \(N \times N\) attention 矩陣**從不完整寫回 HBM**
-- 只維護輸出 \(O\)，以及做 softmax 所需的少量統計量
+- 巨大的 $N \times N$ attention 矩陣**從不完整寫回 HBM**
+- 只維護輸出 $O$，以及做 softmax 所需的少量統計量
 
 副作用：幾乎「讀不出」完整 attention map（做 interpretability 時不方便）——這正是加速的代價與收益。
 
@@ -111,11 +111,7 @@ Flash Attention 的關鍵洞察：
 
 - 長序列（如 4096 tokens）上，相對樸素實作可約 **8×～9×** 加速（視硬體與實作而定）
 - 數值結果與原生 attention **幾乎相同**（浮點累積順序不同可能有極小差異）
-- 現代框架常預設啟用類似優化：
-
-```text
-model_kwargs={"attn_implementation": "sdpa"}
-```
+- 現代框架常預設啟用類似優化，例如指定 `attn_implementation` 為 `sdpa`
 
 是否真的走到 Flash Attention，取決於 PyTorch 版本、GPU 型號等環境。
 
@@ -127,16 +123,16 @@ model_kwargs={"attn_implementation": "sdpa"}
 
 | 概念 | 直覺 |
 |------|------|
-| 標準 Attention | 先造整張大表 \(A\)，再乘 \(V\) → 表太大，搬運貴 |
+| 標準 Attention | 先造整張大表 $A$，再乘 $V$ → 表太大，搬運貴 |
 | Tiling | 桌子一次只放得下一塊，分塊搬、分塊算 |
 | Online Softmax | 邊算邊記「目前最大」和「目前總和」，新塊來了再修正 |
-| Flash Attention | 工作臺上算完就累加進 \(O\)，大表從不進倉庫 |
+| Flash Attention | 工作臺上算完就累加進 $O$，大表從不進倉庫 |
 
 數學上仍是：
 
-\[
-O_i = \sum_j \mathrm{softmax}_j\!\left(\frac{q_i^\top k_j}{\sqrt{d}}\right) v_j
-\]
+$$
+O_i = \sum_j \mathrm{softmax}_j\left(\frac{q_i^\top k_j}{\sqrt{d}}\right) v_j
+$$
 
 只是實作順序與存取模式完全不同。
 
@@ -144,7 +140,7 @@ O_i = \sum_j \mathrm{softmax}_j\!\left(\frac{q_i^\top k_j}{\sqrt{d}}\right) v_j
 
 ## 八、總結
 
-> **Flash Attention 透過「分塊 + Online Softmax」，在不改變 attention 數學結果的前提下，避免把 \(O(N^2)\) 的 attention 矩陣寫入 HBM，大幅減少 GPU 記憶體讀寫，顯著加快（尤其是長序列的）Transformer 運算。**
+> **Flash Attention 透過「分塊 + Online Softmax」，在不改變 attention 數學結果的前提下，避免把 $O(N^2)$ 的 attention 矩陣寫入 HBM，大幅減少 GPU 記憶體讀寫，顯著加快（尤其是長序列的）Transformer 運算。**
 
 | 集 | 主題 |
 |----|------|
