@@ -9,7 +9,7 @@ lecture: 5
 
 > **課程來源：** 台大李宏毅《生成式人工智慧與機器學習導論》2025 Fall 第4講  
 > **影片連結：** [YouTube](https://www.youtube.com/watch?v=dWQVY_h0YXU)  
-> **投影片：** [官方網頁](https://speech.ee.ntu.edu.tw/~hylee/GenAI-ML/2025-fall.php)
+> **投影片：** [Evaluation.pdf](https://speech.ee.ntu.edu.tw/~hylee/GenAI-ML/2025-fall-course-data/Evaluation.pdf)
 
 ---
 
@@ -142,4 +142,4 @@ lecture: 5
 
 **延伸閱讀**：
 - 語言模型的偏見：https://youtu.be/MSnvknLywUc
-- 課程投影片與作業請至官方網頁下載。
+- 課程投影片：[Evaluation.pdf](https://speech.ee.ntu.edu.tw/~hylee/GenAI-ML/2025-fall-course-data/Evaluation.pdf)
