@@ -22,7 +22,6 @@ interface LectureMeta {
 
 interface SidebarProps {
   coursesByTrack: Record<Track, CourseMeta[]>;
-  firstLectureByTrack: Record<Track, string | null>;
 }
 
 function parseTrack(pathname: string): Track {
@@ -30,10 +29,7 @@ function parseTrack(pathname: string): Track {
   return "ml";
 }
 
-export default function Sidebar({
-  coursesByTrack,
-  firstLectureByTrack,
-}: SidebarProps) {
+export default function Sidebar({ coursesByTrack }: SidebarProps) {
   const pathname = usePathname();
   const track = parseTrack(pathname);
   const trackMeta = TRACK_META[track];
@@ -95,26 +91,6 @@ export default function Sidebar({
           </h1>
           <p className="mt-1 text-xs text-neutral-500">{trackMeta.subtitle}</p>
         </Link>
-
-        <div className="mt-4 grid grid-cols-2 gap-1 rounded-lg bg-neutral-900 p-1">
-          {(["ml", "engineering"] as Track[]).map((t) => {
-            const active = track === t;
-            const href = firstLectureByTrack[t] ?? `/${t}`;
-            return (
-              <Link
-                key={t}
-                href={href}
-                className={`rounded-md px-2 py-1.5 text-center text-xs font-medium transition-colors ${
-                  active
-                    ? "bg-neutral-800 text-neutral-100"
-                    : "text-neutral-500 hover:text-neutral-300"
-                }`}
-              >
-                {TRACK_META[t].label}
-              </Link>
-            );
-          })}
-        </div>
       </div>
 
       <nav className="flex-1 overflow-y-auto p-3">
@@ -198,7 +174,7 @@ export default function Sidebar({
         })}
       </nav>
 
-      <div className="space-y-3 border-t border-neutral-800 p-4">
+      <div className="border-t border-neutral-800 p-4">
         <Link
           href="/"
           className="flex items-center gap-2 text-xs text-neutral-500 transition-colors hover:text-neutral-300"
@@ -206,15 +182,6 @@ export default function Sidebar({
           <span>←</span>
           <span>返回首页</span>
         </Link>
-        <a
-          href="https://claude.haylee.site/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 text-xs text-neutral-500 transition-colors hover:text-neutral-300"
-        >
-          <span>↗</span>
-          <span>Claude Code Tutorial</span>
-        </a>
       </div>
     </aside>
   );

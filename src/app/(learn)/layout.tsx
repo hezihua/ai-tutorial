@@ -1,10 +1,6 @@
 import Sidebar from "../components/Sidebar";
-import {
-  TRACKS,
-  getAllCourses,
-  getFirstLecturePath,
-  type Track,
-} from "../lib/content";
+import { TopBar } from "../components/TopBar";
+import { TRACKS, getAllCourses, type Track } from "../lib/content";
 
 export default function LearnLayout({
   children,
@@ -37,17 +33,13 @@ export default function LearnLayout({
     }[]
   >;
 
-  const firstLectureByTrack = Object.fromEntries(
-    TRACKS.map((track) => [track, getFirstLecturePath(track)])
-  ) as Record<Track, string | null>;
-
   return (
     <>
-      <Sidebar
-        coursesByTrack={coursesByTrack}
-        firstLectureByTrack={firstLectureByTrack}
-      />
-      <main className="ml-72 min-h-screen">{children}</main>
+      <Sidebar coursesByTrack={coursesByTrack} />
+      <div className="ml-72 min-h-screen">
+        <TopBar />
+        <main>{children}</main>
+      </div>
     </>
   );
 }
