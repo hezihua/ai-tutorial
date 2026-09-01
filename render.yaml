@@ -1,33 +1,9 @@
 services:
-  - name: ai-portal
+  - name: ai-tutorial
     type: web
     env: node
-    buildCommand: pnpm install --frozen-lockfile && cd apps/portal && pnpm build
-    startCommand: cd apps/portal && pnpm start
-    rootDir: .
-    region: singapore
-    plan: free
-    envVars:
-      - key: NODE_ENV
-        value: production
-
-  - name: ai-blog
-    type: web
-    env: node
-    buildCommand: pnpm install --frozen-lockfile && cd apps/blog && pnpm build
-    startCommand: cd apps/blog && pnpm start
-    rootDir: .
-    region: singapore
-    plan: free
-    envVars:
-      - key: NODE_ENV
-        value: production
-
-  - name: ai-engineering-blog
-    type: web
-    env: node
-    buildCommand: pnpm install --frozen-lockfile && cd apps/engineering-blog && pnpm build
-    startCommand: cd apps/engineering-blog && pnpm start
+    buildCommand: pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm start
     rootDir: .
     region: singapore
     plan: free
