@@ -22,7 +22,7 @@ ai-tutorial/
 │   └── engineering/        # AI 工程化讲义
 ├── src/app/                # Next.js App Router
 ├── package.json
-└── render.yaml             # 单一 Render 服务
+└── vercel.json             # Vercel 部署配置
 ```
 
 ## 技术栈
@@ -32,7 +32,7 @@ ai-tutorial/
 - Tailwind CSS
 - Markdown / MDX（gray-matter + next-mdx-remote）
 - pnpm
-- Render
+- Vercel
 
 ## 本地开发
 
@@ -63,9 +63,25 @@ tags: [标签1, 标签2]
 
 路由形如 `/ml/courses/{course}/{lecture}` 与 `/engineering/courses/{course}/{lecture}`。
 
-## 部署
+## 部署（Vercel）
 
-[`render.yaml`](./render.yaml) 定义一个服务 `ai-tutorial`：根目录 `pnpm build` / `pnpm start`。
+### 方式一：Git 集成（推荐）
+
+1. 在 [Vercel](https://vercel.com) 导入本仓库
+2. 框架会自动识别为 Next.js，构建命令 `pnpm build`
+3. 推送 `main` 分支即自动部署生产环境
+
+### 方式二：CLI
+
+```bash
+pnpm install
+pnpm dlx vercel login    # 首次
+pnpm dlx vercel link     # 首次，关联项目
+pnpm deploy:preview      # 预览部署
+pnpm deploy              # 生产部署
+```
+
+配置见 [`vercel.json`](./vercel.json)。
 
 ## 约定
 
